@@ -6,14 +6,21 @@ class Enemy {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
 
-    constructor(x, y){
+    constructor(x, y, speed){
+        this.sprite = 'images/enemy-bug.png';
         this.x = x;
         this.y = y;
-        this.sprite = 'images/enemy-bug.png';
+        this.speed = speed;
+        
     }
 
     // Parameter: dt, a time delta between ticks
     update(dt){
+        this.x += this.speed * dt;
+        if (this.x >= 500) {
+            this.x = -100;
+        }
+
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -61,6 +68,10 @@ class Player {
                 this.x += 100;
             } else if(this.x > 400){
                 this.x -= 100;
+            } else if(this.y < -100) {
+                this.y += 82;
+            } else if(this.y > 400) {
+                this.y -= 82;
             }
     }
 
@@ -68,9 +79,10 @@ class Player {
 
 // ENEMIES POPING
 // Self note: Enemies Y location = Top lane : 50, Middle lane : 130, Bottom lane : 220
-const enemy1 = new Enemy(60, 50);
-const allEnemies = [enemy1];
-
+const enemy1 = new Enemy(60, 50, 100);
+const enemy2 = new Enemy(210, 50, 100);
+const enemy3 = new Enemy(80, 220, 100);
+const allEnemies = [enemy1, enemy2, enemy3];
 // Self note: Player start location : 200, 375
 const player = new Player(200,375);
 // Now instantiate your objects.
