@@ -1,3 +1,4 @@
+let score = 0;
 // Enemies our player must avoid
 class Enemy {
     // Variables applied to each of our instances go here,
@@ -10,6 +11,8 @@ class Enemy {
         this.sprite = 'images/enemy-bug.png';
         this.x = x;
         this.y = y;
+        this.width = 50;
+        this.height = 50;
         this.speed = speed;
         
     }
@@ -21,6 +24,12 @@ class Enemy {
             this.x = -100;
         }
 
+        if (player.x < this.x + this.width && 
+            player.x + player.width > this.x && 
+            player.y < this.y + this.height && 
+            player.y + player.height > this.y) {
+                player.resetPosition();
+        }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -41,11 +50,13 @@ class Player {
     constructor(x, y){
         this.x = x;
         this.y = y;
+        this.width = 50;
+        this.height = 50;
         this.sprite = 'images/char-boy.png';
     }
 
     update(dt){
-
+        
     }
 
     render(){
@@ -72,16 +83,41 @@ class Player {
                 this.y += 82;
             } else if(this.y > 400) {
                 this.y -= 82;
+            } else if(this.y < 0){
+                this.resetPositionWin();
             }
-    }
 
+        }
+    
+    resetPositionWin(){
+            this.x = 200;
+            this.y = 375;
+            score += 1;
+            enemy1.speed += 10;
+            enemy2.speed += 10;
+            enemy3.speed += 10;
+            enemy4.speed += 10;
+            addEnemy();
+        }
+
+    resetPosition(){
+        this.x = 200;
+        this.y = 375;
+    }
 };
+
+function addEnemy(){
+    if(score === 10){
+        allEnemies.push(enemy4);
+    }
+}
 
 // ENEMIES POPING
 // Self note: Enemies Y location = Top lane : 50, Middle lane : 130, Bottom lane : 220
-const enemy1 = new Enemy(60, 50, 100);
-const enemy2 = new Enemy(210, 50, 100);
-const enemy3 = new Enemy(80, 220, 100);
+const enemy1 = new Enemy(60, 50, Math.floor(Math.random() * 100) + 100);
+const enemy2 = new Enemy(210, 130, Math.floor(Math.random() * 100) + 100);
+const enemy3 = new Enemy(80, 220, Math.floor(Math.random() * 100) + 100);
+const enemy4 = new Enemy(75, 50, Math.floor(Math.random() * 100) + 100)
 const allEnemies = [enemy1, enemy2, enemy3];
 // Self note: Player start location : 200, 375
 const player = new Player(200,375);
